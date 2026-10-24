@@ -15,10 +15,10 @@ import { errorMessage } from '../core/utils';
         <label>Nom du projet *
           <input name="title" [(ngModel)]="title" minlength="3" maxlength="150" required />
         </label>
-        <label>Prix (USD) *
+        <label>Prix (TND) *
           <input type="number" name="price" [(ngModel)]="price" min="1" step="0.01" required />
         </label>
-        <label>Description * (10 caractères min.)
+        <label>Description * (10 caractères minimum)
           <textarea name="description" rows="6" [(ngModel)]="description" minlength="10" required></textarea>
         </label>
         <label>URL du projet <span class="muted">(optionnel)</span>
