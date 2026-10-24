@@ -8,6 +8,7 @@ import { errorMessage } from '../core/utils';
   standalone: true,
   imports: [FormsModule, RouterLink],
   template: `
+    <div class="auth-shell">
     <div class="card narrow">
       <h2>Connexion</h2>
       <form (ngSubmit)="submit()" #f="ngForm">
@@ -21,6 +22,7 @@ import { errorMessage } from '../core/utils';
         <button class="btn" [disabled]="f.invalid || loading">Se connecter</button>
       </form>
       <p class="muted">Pas de compte ? <a routerLink="/register">Inscrivez-vous</a></p>
+    </div>
     </div>
   `,
 })

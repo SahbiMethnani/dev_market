@@ -8,7 +8,7 @@ import { Conversation } from '../core/models';
   standalone: true,
   imports: [RouterLink, DatePipe],
   template: `
-    <h2>Messagerie</h2>
+    <div class="page-header"><h2>Messagerie</h2></div>
     @if (loaded && conversations.length === 0) {
       <p class="muted">Aucune conversation. Ouvrez un projet et cliquez sur « Contacter le développeur ».</p>
     }

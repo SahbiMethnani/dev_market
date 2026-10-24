@@ -8,7 +8,7 @@ import { ProjectService } from '../core/project.service';
   standalone: true,
   imports: [RouterLink, CurrencyPipe],
   template: `
-    <div class="row between">
+    <div class="page-header">
       <h2>Mes projets</h2>
       <a class="btn" routerLink="/projects/new">+ Publier un projet</a>
     </div>

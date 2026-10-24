@@ -12,7 +12,7 @@ import { errorMessage } from '../core/utils';
   imports: [CurrencyPipe, DatePipe, RouterLink],
   template: `
     @if (project; as p) {
-      <a routerLink="/projects" class="muted">← Retour aux projets</a>
+      <a routerLink="/projects" class="back-link">← Retour aux projets</a>
       <div class="card detail">
         @if (svc.imageUrl(p.screenshot); as img) {
           <img [src]="img" [alt]="p.title" class="hero" />

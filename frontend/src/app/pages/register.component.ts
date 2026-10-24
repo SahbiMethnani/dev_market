@@ -9,6 +9,7 @@ import { errorMessage } from '../core/utils';
   standalone: true,
   imports: [FormsModule, RouterLink],
   template: `
+    <div class="auth-shell">
     <div class="card narrow">
       <h2>Créer un compte</h2>
       <form (ngSubmit)="submit()" #f="ngForm">
@@ -31,6 +32,7 @@ import { errorMessage } from '../core/utils';
         <button class="btn" [disabled]="f.invalid || loading">S'inscrire</button>
       </form>
       <p class="muted">Déjà inscrit ? <a routerLink="/login">Connexion</a></p>
+    </div>
     </div>
   `,
 })

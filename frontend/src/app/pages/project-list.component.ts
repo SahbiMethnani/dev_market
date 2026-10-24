@@ -9,7 +9,7 @@ import { ProjectService } from '../core/project.service';
   standalone: true,
   imports: [FormsModule, RouterLink, CurrencyPipe],
   template: `
-    <div class="row between">
+    <div class="page-header">
       <h2>Projets à vendre</h2>
       <form (ngSubmit)="load()" class="search">
         <input name="q" [(ngModel)]="q" placeholder="Rechercher un projet…" />

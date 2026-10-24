@@ -9,6 +9,7 @@ import { errorMessage } from '../core/utils';
   standalone: true,
   imports: [FormsModule, RouterLink],
   template: `
+    <div class="auth-shell">
     <div class="card narrow">
       <h2>{{ editId ? 'Modifier le projet' : 'Publier un projet' }}</h2>
       <form (ngSubmit)="submit()" #f="ngForm">
@@ -43,6 +44,7 @@ import { errorMessage } from '../core/utils';
           <a class="btn secondary" routerLink="/my-projects">Annuler</a>
         </div>
       </form>
+    </div>
     </div>
   `,
 })

@@ -11,7 +11,7 @@ import { errorMessage } from '../core/utils';
   standalone: true,
   imports: [FormsModule, RouterLink, DatePipe],
   template: `
-    <a routerLink="/messages" class="muted">← Toutes les conversations</a>
+    <a routerLink="/messages" class="back-link">← Toutes les conversations</a>
     <div class="card chat">
       @if (info) {
         <div class="chat-head">
