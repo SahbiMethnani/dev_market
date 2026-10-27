@@ -47,7 +47,7 @@ import { AuthService } from './core/auth.service';
       <main class="container">
         <router-outlet />
       </main>
-      <footer class="app-footer">DevMarket — achetez et vendez des projets prêts à l'emploi</footer>
+      <footer class="app-footer">DevMarket achetez et vendez des projets prêts à l'emploi by <a href="https://omc-solutions.netlify.app/" target="_blank" rel="noopener noreferrer">OMC Solutions</a></footer>
     </div>
   `,
 })
