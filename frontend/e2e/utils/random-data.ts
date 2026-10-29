@@ -1,9 +1,5 @@
 import { randomInt } from 'crypto';
 
-/**
- * Générateur de données aléatoires pour les tests Playwright.
- */
-
 export interface TestUser {
   name: string;
   email: string;
@@ -79,7 +75,6 @@ export function randomPassword(length = 12): string {
   return shuffle(chars).join('');
 }
 
-/** Génère un utilisateur complet : nom + email + mot de passe. */
 export function generateUser(): TestUser {
   const name = randomName();
   return {
