@@ -49,6 +49,12 @@ jobs:
             sleep 2
           done
           echo "Backend did not start"; cat backend.log; exit 1
+      - name: Seed test user
+        run: |
+          curl -sf -X POST http://localhost:8000/auth/register \
+            -H "Content-Type: application/json" \
+            -d '{"email":"test@sahbi.tn","password":"Test123M&","name":"Test User"}' \
+          || { echo "Seed failed"; tail -n 40 backend/backend.log; exit 1; }
 
       - name: Install frontend dependencies
         working-directory: frontend
