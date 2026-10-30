@@ -73,7 +73,14 @@ jobs:
 
       - name: Run Playwright tests
         working-directory: frontend
-        run: npx playwright test example.spec.ts --project=firefox
+        run: npx playwright test example.spec.ts --project=firefox --retries=0 --timeout=20000 --reporter=list
+
+      - name: Show server logs
+        if: failure()
+        run: |
+          echo "=== backend ==="; tail -n 80 backend/backend.log || true
+          echo "=== frontend ==="; tail -n 80 frontend/frontend.log || true
+          echo "=== page ==="; curl -s http://localhost:4200 | head -c 1500
 
       - name: Upload Playwright report
         if: ${{ !cancelled() }}
