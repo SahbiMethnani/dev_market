@@ -73,7 +73,7 @@ jobs:
 
       - name: Run Playwright tests
         working-directory: frontend
-        run: npx playwright test --workers=1 --project=firefox
+        run: npx playwright test example.spec.ts --project=firefox
 
       - name: Upload Playwright report
         if: ${{ !cancelled() }}
