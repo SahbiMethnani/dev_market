@@ -73,6 +73,8 @@ jobs:
 
       - name: Run Playwright tests
         working-directory: frontend
+        env:
+          DEBUG: pw:api
         run: npx playwright test example.spec.ts --project=firefox --retries=0 --timeout=20000 --reporter=list
 
       - name: Show server logs
