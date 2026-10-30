@@ -10,13 +10,13 @@ permissions:
   contents: read
 
 jobs:
-  frontend:
+  e2e:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
 
-    defaults:
-      run:
-        working-directory: frontend
+    env:
+      DATABASE_URL: "sqlite:///./test.db"
+      SECRET_KEY: "ci-test-secret-key-32-characters-min"
 
     steps:
       - name: Checkout repository
@@ -29,19 +29,41 @@ jobs:
           cache: npm
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install dependencies
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt
+
+      - name: Start backend
+        working-directory: backend
+        run: |
+          nohup uvicorn app.main:app > backend.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:8000/docs > /dev/null && exit 0
+            sleep 2
+          done
+          echo "Backend did not start"; cat backend.log; exit 1
+
+      - name: Install frontend dependencies
+        working-directory: frontend
         run: npm ci
 
       - name: Build Angular application
+        working-directory: frontend
         run: npm run build
 
-      - name: Install Playwright browsers
+      - name: Install Playwright Firefox
+        working-directory: frontend
         run: npx playwright install --with-deps firefox
 
       - name: Run Playwright tests
-        env:
-          DATABASE_URL: "sqlite:///:memory:"
-          SECRET_KEY: "ci-test-secret-key-32-characters-min"
+        working-directory: frontend
         run: npx playwright test --workers=1 --project=firefox
 
       - name: Upload Playwright report
@@ -52,4 +74,4 @@ jobs:
           path: |
             frontend/playwright-report/
             frontend/test-results/
-          retention-days: 7
+          retention-days: 10
