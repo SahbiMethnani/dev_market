@@ -57,6 +57,15 @@ jobs:
       - name: Build Angular application
         working-directory: frontend
         run: npm run build
+      - name: Start frontend
+        working-directory: frontend
+        run: |
+          nohup npx ng serve --host 0.0.0.0 --port 4200 > frontend.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:4200 > /dev/null && echo "Frontend ready" && exit 0
+            sleep 2
+          done
+          echo "Frontend did not start"; cat frontend.log; exit 1
 
       - name: Install Playwright Firefox
         working-directory: frontend
