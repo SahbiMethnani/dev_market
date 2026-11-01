@@ -7,7 +7,7 @@ def generate_username():
 def generate_email():
     return generate_username() + "@example.com"
 def generate_password():
-    return "".join(random.choices(string.ascii_letters + string.digits, k=12))
+    return "aA1!" + "".join(random.choices(string.ascii_letters + string.digits, k=8))
 def generate_data():
     return {
         "username": generate_username(),

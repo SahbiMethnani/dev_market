@@ -22,7 +22,7 @@ import { ProjectService } from '../core/project.service';
             <div class="placeholder">Pas de capture</div>
           }
           <h3>{{ p.title }}</h3>
-          <p class="price">{{ p.price | currency: 'USD' : 'symbol' : '1.0-2' }}</p>
+          <p class="price">{{ p.price | currency: 'TND' : 'symbol' : '1.0-2' }}</p>
           <div class="row">
             <a class="btn small" [routerLink]="['/projects', p.id]">Voir</a>
             <a class="btn small secondary" [routerLink]="['/projects', p.id, 'edit']">Modifier</a>

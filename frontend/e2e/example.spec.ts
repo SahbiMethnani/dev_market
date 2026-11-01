@@ -12,3 +12,4 @@ test('has title', async ({ page }) => {
   await page.screenshot({ path: './capture/screenshot.png' });
   await page.getByRole('link', { name: 'Publier un projet'}).click();
 });
+

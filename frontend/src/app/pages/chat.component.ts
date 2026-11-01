@@ -20,6 +20,7 @@ import { errorMessage } from '../core/utils';
           <a [routerLink]="['/projects', info.project_id]">{{ info.project_title }}</a>
         </div>
       }
+      <p class="muted">Les messages sont éphémères et sont supprimés après 30 jours.</p>
       <div class="chat-box" #box>
         @for (m of messages; track m.id) {
           <div class="bubble" [class.mine]="m.sender_id === auth.user()?.id">

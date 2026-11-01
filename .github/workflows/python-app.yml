@@ -42,5 +42,3 @@ jobs:
           DATABASE_URL: "sqlite:///:memory:"
           SECRET_KEY: "ci-test-secret-key-32-characters-min"
         run: pytest -q
-
-  

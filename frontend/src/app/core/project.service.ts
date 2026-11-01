@@ -3,15 +3,23 @@ import { Injectable, inject } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Project } from './models';
 
+export interface ProjectPage {
+  items: Project[];
+  total: number;
+  skip: number;
+  limit: number;
+}
+
 @Injectable({ providedIn: 'root' })
 export class ProjectService {
   private http = inject(HttpClient);
   private api = `${environment.apiUrl}/projects`;
 
-  list(q?: string) {
+  list(q?: string, skip = 0, limit = 12) {
     let params = new HttpParams();
     if (q) params = params.set('q', q);
-    return this.http.get<Project[]>(this.api, { params });
+    params = params.set('skip', skip).set('limit', limit);
+    return this.http.get<ProjectPage>(this.api, { params });
   }
 
   mine() {

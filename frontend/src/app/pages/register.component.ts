@@ -78,8 +78,8 @@ import { errorMessage } from '../core/utils';
               [(ngModel)]="password"
               #passwordCtrl="ngModel"
               minlength="8"
-              maxlength="128"
-              pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,128}"
+              maxlength="72"
+              pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,72}"
               required
               autocomplete="new-password"
               placeholder="Choix un mot de passe sécurisé"
@@ -91,7 +91,7 @@ import { errorMessage } from '../core/utils';
               @if (passwordCtrl.errors?.['required']) {
                 Le mot de passe est obligatoire.
               } @else if (passwordCtrl.errors?.['minlength'] || passwordCtrl.errors?.['maxlength']) {
-                Le mot de passe doit contenir entre 8 et 128 caractères.
+                Le mot de passe doit contenir entre 8 et 72 caractères.
               } @else if (passwordCtrl.errors?.['pattern']) {
                 Utilisez au moins une minuscule, une majuscule, un chiffre et un caractère spécial.
               }

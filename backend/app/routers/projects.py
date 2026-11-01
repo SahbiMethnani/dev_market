@@ -2,20 +2,20 @@ from pathlib import Path
 from typing import List, Optional
 from uuid import uuid4
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile, status
 from sqlalchemy.orm import Session, joinedload
 
 from ..database import get_db
 from ..deps import require_developer
 from ..models import Project, User
-from ..schemas import ProjectOut
+from ..schemas import ProjectOut, ProjectPage
 
 router = APIRouter(prefix="/projects", tags=["projects"])
 
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 ALLOWED_TYPES = {"image/png": ".png", "image/jpeg": ".jpg", "image/webp": ".webp"}
-MAX_SIZE = 5 * 1024 * 1024  # 5 Mo
+MAX_SIZE = 5 * 1024 * 1024  
 
 
 def to_out(p: Project) -> ProjectOut:
@@ -53,7 +53,7 @@ async def save_screenshot(file: UploadFile) -> str:
     ext = ALLOWED_TYPES.get(file.content_type)
     if not ext:
         raise HTTPException(400, "Capture invalide : PNG, JPEG ou WEBP uniquement")
-    data = await file.read()
+    data = await file.read(MAX_SIZE + 1)
     if len(data) > MAX_SIZE:
         raise HTTPException(413, "Capture trop lourde (5 Mo maximum)")
     if not looks_like_image(data):
@@ -70,13 +70,20 @@ def delete_screenshot(path: Optional[str]) -> None:
             f.unlink()
 
 
-@router.get("", response_model=List[ProjectOut])
-def list_projects(q: Optional[str] = None, db: Session = Depends(get_db)):
+@router.get("", response_model=ProjectPage)
+def list_projects(
+    q: Optional[str] = None,
+    skip: int = Query(0, ge=0),
+    limit: int = Query(12, ge=1, le=100),
+    db: Session = Depends(get_db),
+):
     query = db.query(Project).options(joinedload(Project.developer))
     if q:
         like = f"%{q}%"
         query = query.filter(Project.title.like(like) | Project.description.like(like))
-    return [to_out(p) for p in query.order_by(Project.created_at.desc()).all()]
+    total = query.order_by(None).count()
+    projects = query.order_by(Project.created_at.desc(), Project.id.desc()).offset(skip).limit(limit).all()
+    return ProjectPage(items=[to_out(p) for p in projects], total=total, skip=skip, limit=limit)
 
 
 @router.get("/mine", response_model=List[ProjectOut])

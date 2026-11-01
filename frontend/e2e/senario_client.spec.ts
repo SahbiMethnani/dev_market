@@ -20,7 +20,9 @@ test('test', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Mot de passe' }).press('CapsLock');
   await page.getByRole('textbox', { name: 'Mot de passe' }).fill('test123M&');
   await page.getByRole('button', { name: 'S\'inscrire' }).click();
-  await page.getByRole('link', { name: 'Test_Projet Test_Projet $100' }).click();
+  /*await page.getByRole('link', { name: 'Test_Projet Test_Projet $100' }).click();*/
+  await page.getByRole('link', { name: 'Test_Projet Test_Projet' }).click();
+
   await page.locator('body').press('ArrowDown');
   await page.locator('body').press('ArrowDown');
   await page.locator('body').press('ArrowDown');

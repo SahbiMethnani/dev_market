@@ -9,10 +9,10 @@ img = BytesIO()
 Image.new("RGB", (100, 100), "blue").save(img, format="PNG")
 img.seek(0)
 c = TestClient(app)
-r = c.post("/auth/register", json={"username":"Dev One","email":"d@x.com","password":"secret1","role":"developer"}); print(r.status_code)
-r = c.post("/auth/register", json={"username":"Client One","email":"c@x.com","password":"secret1","role":"client"}); print(r.status_code)
-td = c.post("/auth/login", json={"email":"d@x.com","password":"secret1"}).json()["access_token"]
-tc = c.post("/auth/login", json={"email":"c@x.com","password":"secret1"}).json()["access_token"]
+r = c.post("/auth/register", json={"username":"Dev One","email":"d@x.com","password":"Secret1!","role":"developer"}); print(r.status_code)
+r = c.post("/auth/register", json={"username":"Client One","email":"c@x.com","password":"Secret1!","role":"client"}); print(r.status_code)
+td = c.post("/auth/login", json={"email":"d@x.com","password":"Secret1!"}).json()["access_token"]
+tc = c.post("/auth/login", json={"email":"c@x.com","password":"Secret1!"}).json()["access_token"]
 H = lambda t: {"Authorization": f"Bearer {t}"}
 r = c.post(
     "/projects",
@@ -31,7 +31,7 @@ r = c.post(
 print(r.status_code, r.text)
 pid = r.json()["id"]
 print(c.post("/projects", data={"title":"X1","price":"1","description":"description longue"}, headers=H(tc)).status_code)
-print(len(c.get("/projects?q=belle").json()))
+print(len(c.get("/projects?q=belle").json()["items"]))
 conv = c.post("/conversations", json={"project_id":pid}, headers=H(tc)); print(conv.status_code, conv.json())
 cid = conv.json()["id"]
 print(c.post(f"/conversations/{cid}/messages", json={"content":"Bonjour, 100 DT ?"}, headers=H(tc)).status_code)

@@ -18,7 +18,7 @@ import { errorMessage } from '../core/utils';
           <img [src]="img" [alt]="p.title" class="hero" />
         }
         <h2>{{ p.title }}</h2>
-        <p class="price big">{{ p.price | currency: 'USD' : 'symbol' : '1.0-2' }}</p>
+        <p class="price big">{{ p.price | currency: 'TND' : 'symbol' : '1.0-2' }}</p>
         <p class="muted">Publié par <strong>{{ p.developer_username }}</strong> le {{ p.created_at | date: 'dd/MM/yyyy' }}</p>
         <p class="description">{{ p.description }}</p>
         @if (p.url) {

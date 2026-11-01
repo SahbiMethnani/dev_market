@@ -51,6 +51,7 @@ Les principaux objectifs de DevMarket sont :
 DevMarket intègre un système de messagerie permettant aux développeurs et aux clients de communiquer directement.
 
 Cette fonctionnalité vise à simplifier les échanges, à faciliter les négociations et à éviter de multiplier les outils de communication externes.
+Les messages sont supprimés automatiquement après 30 jours.
 
 ## 4. Architecture technique
 

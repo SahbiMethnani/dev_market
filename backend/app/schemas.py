@@ -1,19 +1,43 @@
 from datetime import datetime
 from typing import Literal, Optional
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 
 
 class UserCreate(BaseModel):
     username: str = Field(min_length=3, max_length=50)
     email: EmailStr
-    password: str = Field(min_length=6, max_length=72)
+    password: str = Field(min_length=8, max_length=72)
     role: Literal["developer", "client"]
+
+    @field_validator("password")
+    @classmethod
+    def validate_password_strength(cls, password: str) -> str:
+        if len(password.encode("utf-8")) > 72:
+            raise ValueError("Le mot de passe ne doit pas dépasser 72 octets")
+        if not (
+            any("a" <= char <= "z" for char in password)
+            and any("A" <= char <= "Z" for char in password)
+            and any("0" <= char <= "9" for char in password)
+            and any(not (char.isascii() and char.isalnum()) for char in password)
+        ):
+            raise ValueError(
+                "Le mot de passe doit contenir une minuscule, une majuscule, "
+                "un chiffre et un caractère spécial"
+            )
+        return password
 
 
 class UserLogin(BaseModel):
     email: EmailStr
-    password: str
+    password: str = Field(max_length=72)
+
+    @field_validator("password")
+    @classmethod
+    def validate_password_length(cls, password: str) -> str:
+        if len(password.encode("utf-8")) > 72:
+            raise ValueError("Le mot de passe ne doit pas dépasser 72 octets")
+        return password
 
 
 class UserOut(BaseModel):
@@ -40,6 +64,13 @@ class ProjectOut(BaseModel):
     developer_id: int
     developer_username: str
     created_at: datetime
+
+
+class ProjectPage(BaseModel):
+    items: list[ProjectOut]
+    total: int
+    skip: int
+    limit: int
 
 
 class ConversationCreate(BaseModel):
