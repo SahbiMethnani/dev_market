@@ -75,7 +75,6 @@ a:hover {
   flex-direction: column;
 }
 
-/* —— Navbar —— */
 .navbar {
   position: sticky;
   top: 0;
@@ -173,7 +172,6 @@ a:hover {
   border: 1px solid var(--border);
 }
 
-/* —— Layout —— */
 .container {
   flex: 1;
   width: 100%;
@@ -217,7 +215,6 @@ a:hover {
   padding: 16px 0;
 }
 
-/* —— Cards —— */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -267,7 +264,6 @@ a:hover {
   gap: 12px;
 }
 
-/* —— Project cards —— */
 .project {
   display: flex;
   flex-direction: column;
@@ -381,7 +377,6 @@ a:hover {
   margin: 1rem 0 1.5rem;
 }
 
-/* —— Forms —— */
 label {
   display: block;
   margin: 14px 0;
@@ -451,7 +446,6 @@ textarea {
   font-size: 0.9375rem;
 }
 
-/* —— Buttons —— */
 .btn {
   display: inline-flex;
   align-items: center;
