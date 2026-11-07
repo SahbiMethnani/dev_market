@@ -139,135 +139,9 @@ DevMarket/
 └── README.md
 ```
 
-*Cette arborescence est indicative et doit être adaptée à la structure réelle du dépôt.*
 
-## 7. Installation et exécution
 
-### Prérequis
-
-Avant de démarrer le projet, installez les outils suivants :
-
-- Python.
-- Node.js et npm.
-- Angular CLI.
-- MySQL Server.
-- Git.
-
-### Étape 1 — Récupérer le projet
-
-```bash
-git clone <URL_DU_DEPOT>
-cd DevMarket
-```
-
-Remplacez `<URL_DU_DEPOT>` par l'adresse réelle de votre dépôt Git.
-
-### Étape 2 — Configurer le backend
-
-Accédez au répertoire du backend :
-
-```bash
-cd backend
-```
-
-Créez et activez un environnement virtuel.
-
-Sous Windows :
-
-```powershell
-python -m venv venv
-.\venv\Scripts\Activate.ps1
-```
-
-Installez les dépendances :
-
-```powershell
-pip install -r requirements.txt
-```
-
-Configurez les variables d'environnement nécessaires à la connexion MySQL, selon la configuration du projet.
-
-Démarrez ensuite le serveur FastAPI :
-
-```powershell
-uvicorn main:app --reload
-```
-
-La commande suppose que le fichier `main.py` expose l'application FastAPI sous le nom `app`. Adaptez-la à l'organisation réelle du backend.
-
-Par défaut, l'API sera accessible à l'adresse :
-
-`http://127.0.0.1:8000`
-
-La documentation interactive est généralement disponible à l'adresse :
-
-`http://127.0.0.1:8000/docs`
-
-### Étape 3 — Configurer le frontend
-
-Ouvrez un nouveau terminal et accédez au frontend :
-
-```powershell
-cd frontend
-```
-
-Installez les dépendances :
-
-```powershell
-npm install
-```
-
-Démarrez le serveur Angular :
-
-```powershell
-ng serve
-```
-
-L'interface sera accessible à l'adresse :
-
-`http://localhost:4200`
-
-### Étape 4 — Configurer MySQL
-
-1. Démarrez le serveur MySQL.
-2. Créez la base de données utilisée par l'application.
-3. Configurez les identifiants de connexion dans les variables d'environnement du backend.
-4. Appliquez les éventuelles migrations ou le script SQL du projet.
-5. Vérifiez que le backend peut se connecter à la base de données.
-
-Les noms de la base de données, les variables d'environnement et la procédure d'initialisation doivent correspondre à la configuration effective du projet.
-
-### Déployer gratuitement le frontend et l'API
-
-Le frontend Angular est hébergé en fichiers statiques sur Netlify. L'API FastAPI et son image Docker sont hébergées sur Render Free, et la base de données reste sur TiDB Cloud.
-
-#### 1. Déployer l'API FastAPI sur Render
-
-1. Poussez le dépôt sur GitHub et créez un **Blueprint** dans Render en connectant ce dépôt. Render détecte `render.yaml` à la racine et configure le service web gratuit avec le Dockerfile `backend/Dockerfile`.
-2. Pendant la création, renseignez `CONNECTION_STRING` avec la valeur déjà présente dans `backend/.env`. Ne copiez pas le fichier `.env` dans le dépôt et ne collez pas cette valeur dans le chat.
-3. Le Blueprint génère `SECRET_KEY` automatiquement et active TLS pour la connexion MySQL via `DB_SSL=true`. Dans les variables du service Render, réglez `CORS_ORIGINS` sur `https://dev-saas-market.netlify.app` (sans slash final) et configurez le contrôle de santé `/ping`.
-4. Dans TiDB Cloud, limitez l'accès réseau aux plages d'adresses sortantes Render correspondant à la région de ce service. Ne définissez pas `0.0.0.0/0`. Render Free ne fournit pas d'adresse sortante dédiée ; les plages peuvent être partagées et doivent être vérifiées dans la documentation Render.
-5. Une fois le service déployé, copiez son URL HTTPS publique (pour ce service : `https://devmarket-api-gbgb.onrender.com`).
-
-#### 2. Déployer le frontend sur Netlify
-
-L'URL publique du backend Render est configurée dans `frontend/src/environments/environment.netlify.ts`. Pour ce déploiement, elle est `https://devmarket-api-gbgb.onrender.com` (sans slash final). Si Render attribue une autre URL, mettez-la à jour avant le build.
-
-Connectez le dépôt dans Netlify et réglez **Base directory** sur `frontend`. Le fichier `frontend/netlify.toml` configure la commande de build, le dossier publié et le fallback des routes Angular :
-
-- **Répertoire de base :** `frontend`
-- **Commande de build :** `npm run build:netlify`
-- **Répertoire publié :** `dist/frontend/browser`
-
-Le fichier configure aussi le fallback nécessaire aux routes Angular. Après avoir réglé `CORS_ORIGINS` sur `https://dev-saas-market.netlify.app` dans Render, redéployez le backend. Après un changement d'URL API, relancez un build Netlify.
-
-#### Limites de l'offre gratuite et sécurité
-
-Render Free peut mettre le service en veille après une période d'inactivité ; la première requête suivante peut être lente. Le système de fichiers du service est éphémère : les captures téléversées localement peuvent disparaître lors d'un redémarrage ou déploiement. Utilisez un stockage objet persistant avant d'y conserver des fichiers importants. L'offre est gratuite selon les limites et règles actuelles de Render, mais ne garantit ni disponibilité permanente ni IP de sortie dédiée.
-
-Les connexions navigateur vers Render utilisent HTTPS. Gardez `CONNECTION_STRING` et `SECRET_KEY` dans les variables protégées de Render, utilisez le secret aléatoire généré par Render, et n'autorisez dans `CORS_ORIGINS` que l'origine exacte du frontend Netlify.
-
-## 8. Principe de fonctionnement
+## 7. Principe de fonctionnement
 
 Le fonctionnement de DevMarket repose sur un processus simple :
 
@@ -279,7 +153,7 @@ Le fonctionnement de DevMarket repose sur un processus simple :
 
 La plateforme facilite la découverte des projets et la communication. Elle ne garantit pas, à elle seule, la réalisation ou la sécurisation du paiement.
 
-## 9. Proposition de valeur
+## 8. Proposition de valeur
 
 DevMarket cherche à proposer une alternative accessible aux modèles de mise en relation qui imposent des frais ou des commissions.
 
@@ -293,7 +167,7 @@ Sa proposition de valeur repose sur trois principes :
 
 L'ambition est de construire un environnement où la recherche de projets et les échanges commerciaux sont plus simples et plus accessibles.
 
-## 10. Perspectives d'évolution
+## 9. Perspectives d'évolution
 
 Plusieurs fonctionnalités pourraient enrichir DevMarket :
 
@@ -310,22 +184,8 @@ Plusieurs fonctionnalités pourraient enrichir DevMarket :
 
 Ces éléments constituent des pistes d'évolution et ne sont pas nécessairement disponibles dans la version actuelle.
 
-## 11. Sécurité et bonnes pratiques
 
-Pour assurer la fiabilité de la plateforme, plusieurs mesures sont importantes :
-
-- Protéger les informations d'authentification.
-- Stocker les mots de passe sous forme de hachages sécurisés.
-- Valider les données reçues par l'API.
-- Contrôler les autorisations lors de la modification ou de la suppression des projets.
-- Vérifier les droits d'accès aux conversations et aux messages.
-- Utiliser des variables d'environnement pour les informations sensibles.
-- Activer HTTPS en production.
-- Limiter les accès non autorisés aux ressources de l'application.
-
-Les mesures effectivement mises en place dépendent de l'état actuel du développement.
-
-## 12. Conclusion
+## 10. Conclusion
 
 DevMarket est un projet visant à simplifier la commercialisation de projets informatiques et à améliorer les échanges entre développeurs et clients.
 
@@ -336,3 +196,4 @@ Son ambition est de faciliter l'accès aux opportunités commerciales, de favori
 ---
 
 **DevMarket — Des projets, des opportunités et une communication directe.**
+**Dev** : METHNANI Sahbi 
