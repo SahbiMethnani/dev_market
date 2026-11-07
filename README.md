@@ -245,13 +245,13 @@ Le frontend Angular est hébergé en fichiers statiques sur Netlify. L'API FastA
 
 1. Poussez le dépôt sur GitHub et créez un **Blueprint** dans Render en connectant ce dépôt. Render détecte `render.yaml` à la racine et configure le service web gratuit avec le Dockerfile `backend/Dockerfile`.
 2. Pendant la création, renseignez `CONNECTION_STRING` avec la valeur déjà présente dans `backend/.env`. Ne copiez pas le fichier `.env` dans le dépôt et ne collez pas cette valeur dans le chat.
-3. Le Blueprint génère `SECRET_KEY` automatiquement et active TLS pour la connexion MySQL via `DB_SSL=true`. Renseignez `CORS_ORIGINS` avec l'origine du site Netlify (par exemple `https://nom-du-site.netlify.app`) et configure le contrôle de santé `/ping`.
+3. Le Blueprint génère `SECRET_KEY` automatiquement et active TLS pour la connexion MySQL via `DB_SSL=true`. Dans les variables du service Render, réglez `CORS_ORIGINS` sur `https://dev-saas-market.netlify.app` (sans slash final) et configurez le contrôle de santé `/ping`.
 4. Dans TiDB Cloud, limitez l'accès réseau aux plages d'adresses sortantes Render correspondant à la région de ce service. Ne définissez pas `0.0.0.0/0`. Render Free ne fournit pas d'adresse sortante dédiée ; les plages peuvent être partagées et doivent être vérifiées dans la documentation Render.
-5. Une fois le service déployé, copiez son URL HTTPS publique (par exemple `https://devmarket-api.onrender.com`).
+5. Une fois le service déployé, copiez son URL HTTPS publique (pour ce service : `https://devmarket-api-gbgb.onrender.com`).
 
 #### 2. Déployer le frontend sur Netlify
 
-L'URL publique du backend Render est configurée dans `frontend/src/environments/environment.netlify.ts`. Pour ce déploiement, elle doit être `https://devmarket-api-gbgb.onrender.com` (sans slash final). Si Render attribue une autre URL, mettez-la à jour avant le build.
+L'URL publique du backend Render est configurée dans `frontend/src/environments/environment.netlify.ts`. Pour ce déploiement, elle est `https://devmarket-api-gbgb.onrender.com` (sans slash final). Si Render attribue une autre URL, mettez-la à jour avant le build.
 
 Connectez le dépôt dans Netlify et réglez **Base directory** sur `frontend`. Le fichier `frontend/netlify.toml` configure la commande de build, le dossier publié et le fallback des routes Angular :
 
@@ -259,7 +259,7 @@ Connectez le dépôt dans Netlify et réglez **Base directory** sur `frontend`. 
 - **Commande de build :** `npm run build:netlify`
 - **Répertoire publié :** `dist/frontend/browser`
 
-Le fichier configure aussi le fallback nécessaire aux routes Angular. Dans les variables du service Render, réglez `CORS_ORIGINS` sur l'origine exacte du site Netlify (par exemple `https://nom-du-site.netlify.app`), puis redéployez Render. Après un changement d'URL API, relancez un build Netlify.
+Le fichier configure aussi le fallback nécessaire aux routes Angular. Après avoir réglé `CORS_ORIGINS` sur `https://dev-saas-market.netlify.app` dans Render, redéployez le backend. Après un changement d'URL API, relancez un build Netlify.
 
 #### Limites de l'offre gratuite et sécurité
 
