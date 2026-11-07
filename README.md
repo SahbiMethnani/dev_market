@@ -237,6 +237,34 @@ L'interface sera accessible à l'adresse :
 
 Les noms de la base de données, les variables d'environnement et la procédure d'initialisation doivent correspondre à la configuration effective du projet.
 
+### Déployer le frontend et l'API gratuitement
+
+Le frontend Angular est hébergé en fichiers statiques sur Cloudflare Pages. L'API FastAPI et son image Docker sont hébergées sur Render Free, et la base de données reste sur TiDB Cloud. Cette configuration évite l'offre payante Cloudflare Containers.
+
+#### 1. Déployer l'API FastAPI sur Render
+
+1. Poussez le dépôt sur GitHub et créez un **Blueprint** dans Render en connectant ce dépôt. Render détecte `render.yaml` à la racine et configure le service web gratuit avec le Dockerfile `backend/Dockerfile`.
+2. Pendant la création, renseignez `CONNECTION_STRING` avec la valeur déjà présente dans `backend/.env`. Ne copiez pas le fichier `.env` dans le dépôt et ne collez pas cette valeur dans le chat.
+3. Le Blueprint génère `SECRET_KEY` automatiquement et configure le contrôle de santé `/ping` ainsi que l'origine Pages `https://dev-market.pages.dev`.
+4. Dans TiDB Cloud, limitez l'accès réseau aux plages d'adresses sortantes Render correspondant à la région de ce service. Ne définissez pas `0.0.0.0/0`. Render Free ne fournit pas d'adresse sortante dédiée ; les plages peuvent être partagées et doivent être vérifiées dans la documentation Render. Conservez une chaîne TiDB avec TLS activé.
+5. Une fois le service déployé, copiez son URL HTTPS publique (par exemple `https://devmarket-api.onrender.com`).
+
+#### 2. Déployer le frontend sur Cloudflare Pages
+
+Dans `frontend/src/environments/environment.cloudflare.ts`, remplacez `https://your-backend.onrender.com` par l'URL HTTPS réelle du service Render. Dans Cloudflare Pages, configurez :
+
+- **Répertoire racine :** `frontend`
+- **Commande de build :** `npm run build:cloudflare`
+- **Répertoire de sortie :** `dist/frontend/browser`
+
+Redéployez Pages après le changement d'URL. Si l'URL ou le domaine du frontend change, mettez aussi à jour `CORS_ORIGINS` dans les variables du service Render.
+
+#### Limites de l'offre gratuite et sécurité
+
+Render Free peut mettre le service en veille après une période d'inactivité ; la première requête suivante peut être lente. Le système de fichiers du service est éphémère : les captures téléversées localement peuvent disparaître lors d'un redémarrage ou déploiement. Utilisez un stockage objet persistant avant d'y conserver des fichiers importants. L'offre est gratuite selon les limites et règles actuelles de Render, mais ne garantit ni disponibilité permanente ni IP de sortie dédiée.
+
+Les connexions navigateur vers Render utilisent HTTPS. Gardez `CONNECTION_STRING` et `SECRET_KEY` dans les variables protégées de Render, utilisez le secret aléatoire généré par Render, et n'autorisez dans `CORS_ORIGINS` que l'origine exacte du frontend.
+
 ## 8. Principe de fonctionnement
 
 Le fonctionnement de DevMarket repose sur un processus simple :

@@ -1,0 +1,11 @@
+.env
+README*
+.pytest_cache
+__pycache__
+*.py[cod]
+*.db
+venv
+.venv
+tests
+reports
+uploads

@@ -1,6 +1,7 @@
 import os
 
 os.environ.setdefault("DATABASE_URL", "sqlite:///:memory:")
+os.environ["CONNECTION_STRING"] = "sqlite:///:memory:"
 os.environ.setdefault("SECRET_KEY", "test-secret-key-for-ci-only-32chars")
 
 import pytest

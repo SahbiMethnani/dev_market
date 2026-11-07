@@ -11,6 +11,12 @@ def test_root(client):
     assert response.json()["status"] == "ok"
 
 
+def test_ping(client):
+    response = client.get("/ping")
+    assert response.status_code == 200
+    assert response.json()["status"] == "ok"
+
+
 def test_register_and_login(client):
     register = client.post(
         "/auth/register",

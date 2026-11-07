@@ -75,3 +75,8 @@ app.include_router(messages.router)
 @app.get("/")
 def root():
     return {"status": "ok", "docs": "/docs"}
+
+
+@app.get("/ping")
+def ping():
+    return {"status": "ok"}

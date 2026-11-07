@@ -36,6 +36,18 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+## Deploying on Cloudflare Pages
+
+The Cloudflare build serves Angular as a static single-page application. Before deploying, replace the example API URL in `src/environments/environment.cloudflare.ts` with the public HTTPS URL of the FastAPI service on Render.
+
+In Cloudflare Pages, connect the repository and configure:
+
+- **Root directory:** `frontend`
+- **Build command:** `npm run build:cloudflare`
+- **Build output directory:** `dist/frontend/browser`
+
+The `cloudflare` build configuration disables server-side rendering and uses client-side routing, which is supported by Pages' SPA fallback. Cloudflare Pages does not run Docker images; deploy FastAPI separately on Render. See the repository README for deployment steps. Set the backend `CORS_ORIGINS` to the Pages site's exact origin.
+
 ## Running unit tests
 
 To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:

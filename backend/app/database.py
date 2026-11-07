@@ -10,6 +10,8 @@ DATABASE_URL = os.getenv(
     "DATABASE_URL", "mysql+pymysql://root:password@localhost:3306/devmarket"
 )
 
+DATABASE_URL = os.getenv("CONNECTION_STRING") or DATABASE_URL
+
 _engine_kwargs: dict = {"pool_pre_ping": True}
 if DATABASE_URL.startswith("sqlite"):
     _engine_kwargs["connect_args"] = {"check_same_thread": False}
