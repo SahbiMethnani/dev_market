@@ -6,11 +6,20 @@ from sqlalchemy.pool import StaticPool
 
 load_dotenv()
 
+
+def _normalize_database_url(url: str) -> str:
+    if url.startswith("mysql://"):
+        return url.replace("mysql://", "mysql+pymysql://", 1)
+    return url
+
+
 DATABASE_URL = os.getenv(
     "DATABASE_URL", "mysql+pymysql://root:password@localhost:3306/devmarket"
 )
 
-DATABASE_URL = os.getenv("CONNECTION_STRING") or DATABASE_URL
+DATABASE_URL = _normalize_database_url(
+    os.getenv("CONNECTION_STRING") or DATABASE_URL
+)
 
 _engine_kwargs: dict = {"pool_pre_ping": True}
 if DATABASE_URL.startswith("sqlite"):
