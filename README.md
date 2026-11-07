@@ -245,8 +245,8 @@ Le frontend Angular est hébergé en fichiers statiques sur Cloudflare Pages. L'
 
 1. Poussez le dépôt sur GitHub et créez un **Blueprint** dans Render en connectant ce dépôt. Render détecte `render.yaml` à la racine et configure le service web gratuit avec le Dockerfile `backend/Dockerfile`.
 2. Pendant la création, renseignez `CONNECTION_STRING` avec la valeur déjà présente dans `backend/.env`. Ne copiez pas le fichier `.env` dans le dépôt et ne collez pas cette valeur dans le chat.
-3. Le Blueprint génère `SECRET_KEY` automatiquement et configure le contrôle de santé `/ping` ainsi que l'origine Pages `https://dev-market.pages.dev`.
-4. Dans TiDB Cloud, limitez l'accès réseau aux plages d'adresses sortantes Render correspondant à la région de ce service. Ne définissez pas `0.0.0.0/0`. Render Free ne fournit pas d'adresse sortante dédiée ; les plages peuvent être partagées et doivent être vérifiées dans la documentation Render. Conservez une chaîne TiDB avec TLS activé.
+3. Le Blueprint génère `SECRET_KEY` automatiquement, active TLS pour la connexion MySQL via `DB_SSL=true`, et configure le contrôle de santé `/ping` ainsi que l'origine Pages `https://dev-market.pages.dev`.
+4. Dans TiDB Cloud, limitez l'accès réseau aux plages d'adresses sortantes Render correspondant à la région de ce service. Ne définissez pas `0.0.0.0/0`. Render Free ne fournit pas d'adresse sortante dédiée ; les plages peuvent être partagées et doivent être vérifiées dans la documentation Render.
 5. Une fois le service déployé, copiez son URL HTTPS publique (par exemple `https://devmarket-api.onrender.com`).
 
 #### 2. Déployer le frontend sur Cloudflare Pages

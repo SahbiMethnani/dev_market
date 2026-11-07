@@ -13,5 +13,7 @@ services:
         generateValue: true
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
         value: "1440"
+      - key: DB_SSL
+        value: "true"
       - key: CORS_ORIGINS
         value: https://dev-market.pages.dev
