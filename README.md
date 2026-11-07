@@ -253,7 +253,7 @@ Le frontend Angular est hébergé en fichiers statiques sur Netlify. L'API FastA
 
 L'URL publique du backend Render est configurée dans `frontend/src/environments/environment.netlify.ts`. Pour ce déploiement, elle doit être `https://devmarket-api-gbgb.onrender.com` (sans slash final). Si Render attribue une autre URL, mettez-la à jour avant le build.
 
-Connectez le dépôt dans Netlify. Le fichier `netlify.toml` à la racine configure automatiquement :
+Connectez le dépôt dans Netlify et réglez **Base directory** sur `frontend`. Le fichier `frontend/netlify.toml` configure la commande de build, le dossier publié et le fallback des routes Angular :
 
 - **Répertoire de base :** `frontend`
 - **Commande de build :** `npm run build:netlify`

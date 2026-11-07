@@ -40,7 +40,7 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 The Netlify build serves Angular as a static single-page application. The API URL is set in `src/environments/environment.netlify.ts`.
 
-Connect the repository to Netlify. The root-level `netlify.toml` configures the build automatically:
+Connect the repository to Netlify and set the **Base directory** to `frontend`. The `frontend/netlify.toml` configures the build command, publish directory, and Angular route fallback:
 
 - **Base directory:** `frontend`
 - **Build command:** `npm run build:netlify`
