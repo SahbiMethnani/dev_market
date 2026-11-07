@@ -36,17 +36,17 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-## Deploying on Cloudflare Pages
+## Deploying on Netlify
 
-The Cloudflare build serves Angular as a static single-page application. Before deploying, replace the example API URL in `src/environments/environment.cloudflare.ts` with the public HTTPS URL of the FastAPI service on Render.
+The Netlify build serves Angular as a static single-page application. The API URL is set in `src/environments/environment.netlify.ts`.
 
-In Cloudflare Pages, connect the repository and configure:
+Connect the repository to Netlify. The root-level `netlify.toml` configures the build automatically:
 
-- **Root directory:** `frontend`
-- **Build command:** `npm run build:cloudflare`
-- **Build output directory:** `dist/frontend/browser`
+- **Base directory:** `frontend`
+- **Build command:** `npm run build:netlify`
+- **Publish directory:** `dist/frontend/browser`
 
-The `cloudflare` build configuration disables server-side rendering and uses client-side routing, which is supported by Pages' SPA fallback. Cloudflare Pages does not run Docker images; deploy FastAPI separately on Render. See the repository README for deployment steps. Set the backend `CORS_ORIGINS` to the Pages site's exact origin.
+The `netlify` build configuration disables server-side rendering. `netlify.toml` also rewrites client-side Angular routes to `index.html`. The FastAPI backend remains on Render; configure its `CORS_ORIGINS` to the exact Netlify site origin. See the repository README for the full deployment flow.
 
 ## Running unit tests
 

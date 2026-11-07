@@ -237,33 +237,35 @@ L'interface sera accessible à l'adresse :
 
 Les noms de la base de données, les variables d'environnement et la procédure d'initialisation doivent correspondre à la configuration effective du projet.
 
-### Déployer le frontend et l'API gratuitement
+### Déployer gratuitement le frontend et l'API
 
-Le frontend Angular est hébergé en fichiers statiques sur Cloudflare Pages. L'API FastAPI et son image Docker sont hébergées sur Render Free, et la base de données reste sur TiDB Cloud. Cette configuration évite l'offre payante Cloudflare Containers.
+Le frontend Angular est hébergé en fichiers statiques sur Netlify. L'API FastAPI et son image Docker sont hébergées sur Render Free, et la base de données reste sur TiDB Cloud.
 
 #### 1. Déployer l'API FastAPI sur Render
 
 1. Poussez le dépôt sur GitHub et créez un **Blueprint** dans Render en connectant ce dépôt. Render détecte `render.yaml` à la racine et configure le service web gratuit avec le Dockerfile `backend/Dockerfile`.
 2. Pendant la création, renseignez `CONNECTION_STRING` avec la valeur déjà présente dans `backend/.env`. Ne copiez pas le fichier `.env` dans le dépôt et ne collez pas cette valeur dans le chat.
-3. Le Blueprint génère `SECRET_KEY` automatiquement, active TLS pour la connexion MySQL via `DB_SSL=true`, et configure le contrôle de santé `/ping` ainsi que l'origine Pages `https://dev-market.pages.dev`.
+3. Le Blueprint génère `SECRET_KEY` automatiquement et active TLS pour la connexion MySQL via `DB_SSL=true`. Renseignez `CORS_ORIGINS` avec l'origine du site Netlify (par exemple `https://nom-du-site.netlify.app`) et configure le contrôle de santé `/ping`.
 4. Dans TiDB Cloud, limitez l'accès réseau aux plages d'adresses sortantes Render correspondant à la région de ce service. Ne définissez pas `0.0.0.0/0`. Render Free ne fournit pas d'adresse sortante dédiée ; les plages peuvent être partagées et doivent être vérifiées dans la documentation Render.
 5. Une fois le service déployé, copiez son URL HTTPS publique (par exemple `https://devmarket-api.onrender.com`).
 
-#### 2. Déployer le frontend sur Cloudflare Pages
+#### 2. Déployer le frontend sur Netlify
 
-Dans `frontend/src/environments/environment.cloudflare.ts`, remplacez `https://your-backend.onrender.com` par l'URL HTTPS réelle du service Render. Dans Cloudflare Pages, configurez :
+L'URL publique du backend Render est configurée dans `frontend/src/environments/environment.netlify.ts`. Pour ce déploiement, elle doit être `https://devmarket-api-gbgb.onrender.com` (sans slash final). Si Render attribue une autre URL, mettez-la à jour avant le build.
 
-- **Répertoire racine :** `frontend`
-- **Commande de build :** `npm run build:cloudflare`
-- **Répertoire de sortie :** `dist/frontend/browser`
+Connectez le dépôt dans Netlify. Le fichier `netlify.toml` à la racine configure automatiquement :
 
-Redéployez Pages après le changement d'URL. Si l'URL ou le domaine du frontend change, mettez aussi à jour `CORS_ORIGINS` dans les variables du service Render.
+- **Répertoire de base :** `frontend`
+- **Commande de build :** `npm run build:netlify`
+- **Répertoire publié :** `dist/frontend/browser`
+
+Le fichier configure aussi le fallback nécessaire aux routes Angular. Dans les variables du service Render, réglez `CORS_ORIGINS` sur l'origine exacte du site Netlify (par exemple `https://nom-du-site.netlify.app`), puis redéployez Render. Après un changement d'URL API, relancez un build Netlify.
 
 #### Limites de l'offre gratuite et sécurité
 
 Render Free peut mettre le service en veille après une période d'inactivité ; la première requête suivante peut être lente. Le système de fichiers du service est éphémère : les captures téléversées localement peuvent disparaître lors d'un redémarrage ou déploiement. Utilisez un stockage objet persistant avant d'y conserver des fichiers importants. L'offre est gratuite selon les limites et règles actuelles de Render, mais ne garantit ni disponibilité permanente ni IP de sortie dédiée.
 
-Les connexions navigateur vers Render utilisent HTTPS. Gardez `CONNECTION_STRING` et `SECRET_KEY` dans les variables protégées de Render, utilisez le secret aléatoire généré par Render, et n'autorisez dans `CORS_ORIGINS` que l'origine exacte du frontend.
+Les connexions navigateur vers Render utilisent HTTPS. Gardez `CONNECTION_STRING` et `SECRET_KEY` dans les variables protégées de Render, utilisez le secret aléatoire généré par Render, et n'autorisez dans `CORS_ORIGINS` que l'origine exacte du frontend Netlify.
 
 ## 8. Principe de fonctionnement
 

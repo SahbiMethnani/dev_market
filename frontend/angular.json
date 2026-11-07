@@ -58,7 +58,7 @@
               "extractLicenses": false,
               "sourceMap": true
             },
-            "cloudflare": {
+            "netlify": {
               "outputMode": "static",
               "server": false,
               "ssr": false,
@@ -69,7 +69,7 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.cloudflare.ts"
+                  "with": "src/environments/environment.netlify.ts"
                 }
               ]
             }
