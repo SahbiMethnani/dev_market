@@ -506,7 +506,6 @@ textarea {
   background: var(--danger-hover);
 }
 
-/* —— Search —— */
 .search {
   display: flex;
   flex: 1;
@@ -538,7 +537,6 @@ textarea {
   border-radius: 10px;
 }
 
-/* —— Conversations —— */
 .conv {
   display: block;
   color: inherit;
@@ -571,7 +569,6 @@ textarea {
   font-weight: 700;
 }
 
-/* —— Chat —— */
 .chat {
   padding: 0;
   overflow: hidden;
@@ -646,7 +643,6 @@ textarea {
   margin: 0 16px 12px;
 }
 
-/* —— Footer —— */
 .app-footer {
   padding: 20px 24px;
   text-align: center;
@@ -656,7 +652,6 @@ textarea {
   background: rgba(255, 255, 255, 0.6);
 }
 
-/* —— Responsive —— */
 @media (max-width: 768px) {
   .nav-toggle {
     display: flex;
